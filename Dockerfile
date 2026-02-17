@@ -1,7 +1,5 @@
 FROM eclipse-temurin:11-jdk
 
-
-# Set the working directory in the image
 WORKDIR /app
 
 # Copy the files from the host file system to the image file system
