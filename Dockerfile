@@ -1,9 +1,12 @@
-FROM eclipse-temurin:11-jdk
-
+# Build stage
+FROM maven:3.9.6-eclipse-temurin-11 AS builder
 WORKDIR /app
+COPY . .
+RUN mvn clean package -DskipTests
 
-# Copy the files from the host file system to the image file system
-COPY target/*.jar app.jar
+# Runtime stage
+FROM eclipse-temurin:11-jdk
+WORKDIR /app
+COPY --from=builder /app/target/*.jar app.jar
+ENTRYPOINT ["java","-jar","app.jar"]
 
-# Run a command to start the application
-ENTRYPOINT ["java", "-jar","app.jar"]
